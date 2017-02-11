@@ -14,7 +14,7 @@
         <div class="view">
           <input class="toggle" type="checkbox" [checked]="todo.done" (click)="doneTodo(todo)">
           <label>{{ todo.todoText | uppercase }}</label>
-          <button class="destroy"></button>
+          <button class="destroy" (click)="deleteTodo(todo)"></button>
         </div>
         <input class="edit" value="Create a TodoMVC template">
       </li>

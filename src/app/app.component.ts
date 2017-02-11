@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   }
 
   addTodo() {
-    this.todos.push({ todoText: this.todoText, done: false });
+    this.todos.push({ id: this.todos.length + 1, todoText: this.todoText, done: false });
     this.todoText = '';
 
     console.log(this.todos);
@@ -44,4 +44,7 @@ export class AppComponent implements OnInit {
     });
   }
 
+  deleteTodo(item: TodoItem) {
+    this.todos.splice(this.todos.indexOf(item), 1);
+  }
 }
