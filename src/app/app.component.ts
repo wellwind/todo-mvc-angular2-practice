@@ -27,6 +27,14 @@ export class AppComponent implements OnInit {
     return requestOptions;
   }
 
+  private updateTodos (){
+this.http
+      .post('/me/todos/', this.todos, this.getRequestOptions())
+      .map(response => response.json())
+      .subscribe(todoItems => {
+        this.todos = todoItems;
+      });
+  }
 
   ngOnInit() {
     this.filterStatus = 'All';
@@ -42,22 +50,12 @@ export class AppComponent implements OnInit {
     const newTodoItem = { id: Math.max(...this.todos.map(todo => todo.id)) + 1, todoText: this.todoText, done: false };
     this.todos.push(newTodoItem);
     this.todoText = '';
-    this.http
-      .patch('/me/todos/', newTodoItem, this.getRequestOptions())
-      .map(response => response.json())
-      .subscribe(todoItems => {
-        this.todos = todoItems;
-      });
+    this.updateTodos();
   }
 
   doneTodo(todoItem: TodoItem) {
     todoItem.done = !todoItem.done;
-    this.http
-      .post('/me/todos/', this.todos, this.getRequestOptions())
-      .map(response => response.json())
-      .subscribe(todoItems => {
-        this.todos = todoItems;
-      });
+    this.updateTodos();
   }
 
   clearCompletedTodo() {
