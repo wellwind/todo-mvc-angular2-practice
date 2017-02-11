@@ -26,4 +26,9 @@ export class AppComponent implements OnInit {
   doneTodo(todoItem: TodoItem) {
     todoItem.done = !todoItem.done;
   }
+
+  clearCompletedTodo() {
+    this.todos = this.todos.filter(todo => !todo.done);
+  }
+
 }
