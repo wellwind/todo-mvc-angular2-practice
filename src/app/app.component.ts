@@ -1,8 +1,6 @@
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { DataService } from './data.service';
 import { TodoItem } from './todo-item';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import 'rxjs/Rx';
 
 @Component({
   selector: 'app-root',
@@ -17,20 +15,12 @@ export class AppComponent implements OnInit {
 
   filterStatus;
 
-  constructor(private http: Http) {
-  }
-
-  private getRequestOptions() {
-    const requestHeaders = new Headers({ 'Accept': 'application/json' });
-    requestHeaders.append('authorization', 'token 72193839-cd75-4de0-b1bb-cf5087e483db');
-    const requestOptions = new RequestOptions({ headers: requestHeaders });
-    return requestOptions;
+  constructor(private dataService: DataService) {
   }
 
   private updateTodos() {
-    this.http
-      .post('/me/todos/', this.todos, this.getRequestOptions())
-      .map(response => response.json())
+    this.dataService
+      .updateTodos(this.todos)
       .subscribe(todoItems => {
         this.todos = todoItems;
       });
@@ -38,9 +28,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.filterStatus = 'All';
-    this.http
-      .get('/me/todos', this.getRequestOptions())
-      .map(response => response.json())
+    this.dataService
+      .loadTodos()
       .subscribe(todoItems => {
         this.todos = todoItems;
       });
@@ -49,7 +38,6 @@ export class AppComponent implements OnInit {
   addTodo() {
     const newTodoItem = { id: Math.max(...this.todos.map(todo => todo.id)) + 1, todoText: this.todoText, done: false };
     this.todos = [...this.todos, newTodoItem];
-    // this.todos.push(newTodoItem);
     this.todoText = '';
     this.updateTodos();
   }
