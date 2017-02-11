@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
   }
 
   deleteTodo(item: TodoItem) {
-    this.todos.splice(this.todos.indexOf(item), 1);
+    this.todos = this.todos.filter(todo => todo.id !== item.id);
     this.updateTodos();
   }
 
