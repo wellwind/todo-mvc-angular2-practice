@@ -1,6 +1,8 @@
-import {Http} from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { TodoItem } from './todo-item';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/Rx';
 
 @Component({
   selector: 'app-root',
@@ -11,20 +13,26 @@ export class AppComponent implements OnInit {
   inputHint = 'What needs to be done?';
 
   todoText;
-  todos: TodoItem[];
+  todos;
 
   filterStatus;
 
-  constructor(private http: Http){
+  constructor(private http: Http) {
   }
 
   ngOnInit() {
     this.filterStatus = 'All';
-    this.todos = [];
+
+    const requestHeaders = new Headers({ 'Accept': 'application/json' });
+    requestHeaders.append('authorization', 'token 72193839-cd75-4de0-b1bb-cf5087e483db');
+    const requestOptions = new RequestOptions({ headers: requestHeaders });
+    this.todos = this.http
+      .get('/me/todos', requestOptions)
+      .map(response => response.json());
   }
 
   addTodo() {
-    this.todos.push({ id: this.todos.length + 1, todoText: this.todoText, done: false });
+    // this.todos.push({ id: this.todos.length + 1, todoText: this.todoText, done: false });
     this.todoText = '';
 
     console.log(this.todos);
@@ -35,7 +43,7 @@ export class AppComponent implements OnInit {
   }
 
   clearCompletedTodo() {
-    this.todos = this.todos.filter(todo => !todo.done);
+    // this.todos = this.todos.filter(todo => !todo.done);
   }
 
   filterTodoStatus(status) {
@@ -43,12 +51,12 @@ export class AppComponent implements OnInit {
   }
 
   completeAll() {
-    this.todos.forEach(todo => {
-      todo.done = true;
-    });
+    // this.todos.forEach(todo => {
+    //   todo.done = true;
+    // });
   }
 
   deleteTodo(item: TodoItem) {
-    this.todos.splice(this.todos.indexOf(item), 1);
+    // this.todos.splice(this.todos.indexOf(item), 1);
   }
 }
