@@ -52,6 +52,12 @@ export class AppComponent implements OnInit {
 
   doneTodo(todoItem: TodoItem) {
     todoItem.done = !todoItem.done;
+    this.http
+      .post('/me/todos/', this.todos, this.getRequestOptions())
+      .map(response => response.json())
+      .subscribe(todoItems => {
+        this.todos = todoItems;
+      });
   }
 
   clearCompletedTodo() {
