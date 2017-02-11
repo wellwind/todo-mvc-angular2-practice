@@ -1,3 +1,4 @@
+import {Http} from '@angular/http';
 import { TodoItem } from './todo-item';
 import { Component, OnInit } from '@angular/core';
 
@@ -13,6 +14,9 @@ export class AppComponent implements OnInit {
   todos: TodoItem[];
 
   filterStatus;
+
+  constructor(private http: Http){
+  }
 
   ngOnInit() {
     this.filterStatus = 'All';
