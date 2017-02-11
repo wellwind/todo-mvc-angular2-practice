@@ -27,8 +27,8 @@ export class AppComponent implements OnInit {
     return requestOptions;
   }
 
-  private updateTodos (){
-this.http
+  private updateTodos() {
+    this.http
       .post('/me/todos/', this.todos, this.getRequestOptions())
       .map(response => response.json())
       .subscribe(todoItems => {
@@ -48,7 +48,8 @@ this.http
 
   addTodo() {
     const newTodoItem = { id: Math.max(...this.todos.map(todo => todo.id)) + 1, todoText: this.todoText, done: false };
-    this.todos.push(newTodoItem);
+    this.todos = [...this.todos, newTodoItem];
+    // this.todos.push(newTodoItem);
     this.todoText = '';
     this.updateTodos();
   }
