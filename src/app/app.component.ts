@@ -1,3 +1,4 @@
+import { EditMode } from './edit-mode';
 import { DataService } from './data.service';
 import { TodoItem } from './todo-item';
 import { Component, OnInit } from '@angular/core';
@@ -15,6 +16,8 @@ export class AppComponent implements OnInit {
 
   filterStatus;
 
+  editMode: EditMode;
+
   constructor(private dataService: DataService) {
   }
 
@@ -26,13 +29,35 @@ export class AppComponent implements OnInit {
       });
   }
 
+  private loadLocalEditMode() {
+    const localEditMode = JSON.parse(localStorage.getItem('editMode'));
+    if (localEditMode) {
+      this.editMode = localEditMode;
+    } else {
+      this.resetEditMode();
+    }
+  }
+
+  private resetEditMode() {
+    this.editMode = {
+      editId: null,
+      editText: ''
+    };
+    this.saveTempEditingTodo();
+  }
+
   ngOnInit() {
+    this.loadLocalEditMode();
+
     this.filterStatus = 'All';
+
     this.dataService
       .loadTodos()
       .subscribe(todoItems => {
         this.todos = todoItems;
       });
+
+
   }
 
   addTodo() {
@@ -66,5 +91,26 @@ export class AppComponent implements OnInit {
   deleteTodo(item: TodoItem) {
     this.todos.splice(this.todos.indexOf(item), 1);
     this.updateTodos();
+  }
+
+  enterEditItemMode(item: TodoItem) {
+    this.editMode = {
+      editId: item.id,
+      editText: item.todoText
+    };
+  }
+
+  updateTodoItem(todoItem: TodoItem) {
+    todoItem.todoText = this.editMode.editText;
+    this.updateTodos();
+    this.resetEditMode();
+  }
+
+  saveTempEditingTodo() {
+    localStorage.setItem('editMode', JSON.stringify(this.editMode));
+  }
+
+  cancelEditMode() {
+    this.resetEditMode();
   }
 }

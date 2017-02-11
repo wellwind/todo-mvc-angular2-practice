@@ -10,13 +10,13 @@
     <ul class="todo-list">
       <!-- These are here just to show the structure of the list items -->
       <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-      <li *ngFor="let todo of todos | filterTodos:filterStatus" [ngClass]="{completed: todo.done}">
-        <div class="view">
+      <li *ngFor="let todo of todos | filterTodos:filterStatus" [ngClass]="{completed: todo.done, editing: todo.id === editMode.editId}">
+        <div class="view" (click)="enterEditItemMode(todo)" *ngIf="editMode.editId !== todo.id">
           <input class="toggle" type="checkbox" [checked]="todo.done" (click)="doneTodo(todo)">
           <label>{{ todo.todoText | uppercase }}</label>
           <button class="destroy" (click)="deleteTodo(todo)"></button>
         </div>
-        <input class="edit" value="Create a TodoMVC template">
+        <input class="edit" *ngIf="todo.id === editMode.editId" [(ngModel)]="editMode.editText" (keyup.enter)="updateTodoItem(todo)" (keyup.esc)="cancelEditMode()" (change)="saveTempEditingTodo()">
       </li>
     </ul>
   </section>
