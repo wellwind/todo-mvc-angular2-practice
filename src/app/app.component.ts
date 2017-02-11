@@ -59,7 +59,8 @@ this.http
   }
 
   clearCompletedTodo() {
-    // this.todos = this.todos.filter(todo => !todo.done);
+    this.todos = this.todos.filter(todo => !todo.done);
+    this.updateTodos();
   }
 
   filterTodoStatus(status) {
@@ -67,12 +68,14 @@ this.http
   }
 
   completeAll() {
-    // this.todos.forEach(todo => {
-    //   todo.done = true;
-    // });
+    this.todos.forEach(todo => {
+      todo.done = true;
+    });
+    this.updateTodos();
   }
 
   deleteTodo(item: TodoItem) {
-    // this.todos.splice(this.todos.indexOf(item), 1);
+    this.todos.splice(this.todos.indexOf(item), 1);
+    this.updateTodos();
   }
 }
