@@ -1,14 +1,14 @@
 import { EditMode } from './edit-mode';
 import { DataService } from './data.service';
 import { TodoItem } from './todo-item';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, OnChanges, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewChecked {
   inputHint = 'What needs to be done?';
 
   todoText;
@@ -58,6 +58,13 @@ export class AppComponent implements OnInit {
       });
 
 
+  }
+
+  ngAfterViewChecked() {
+    const edit = (document.querySelector('.edit') as HTMLElement);
+    if (edit) {
+      edit.focus();
+    }
   }
 
   addTodo() {
