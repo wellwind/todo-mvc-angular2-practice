@@ -38,4 +38,10 @@ export class AppComponent implements OnInit {
     this.filterStatus = status;
   }
 
+  completeAll() {
+    this.todos.forEach(todo => {
+      todo.done = true;
+    });
+  }
+
 }
