@@ -13,29 +13,41 @@ export class AppComponent implements OnInit {
   inputHint = 'What needs to be done?';
 
   todoText;
-  todos;
+  todos: TodoItem[] = [];
 
   filterStatus;
 
   constructor(private http: Http) {
   }
 
-  ngOnInit() {
-    this.filterStatus = 'All';
-
+  private getRequestOptions() {
     const requestHeaders = new Headers({ 'Accept': 'application/json' });
     requestHeaders.append('authorization', 'token 72193839-cd75-4de0-b1bb-cf5087e483db');
     const requestOptions = new RequestOptions({ headers: requestHeaders });
-    this.todos = this.http
-      .get('/me/todos', requestOptions)
-      .map(response => response.json());
+    return requestOptions;
+  }
+
+
+  ngOnInit() {
+    this.filterStatus = 'All';
+    this.http
+      .get('/me/todos', this.getRequestOptions())
+      .map(response => response.json())
+      .subscribe(todoItems => {
+        this.todos = todoItems;
+      });
   }
 
   addTodo() {
-    // this.todos.push({ id: this.todos.length + 1, todoText: this.todoText, done: false });
+    const newTodoItem = { id: Math.max(...this.todos.map(todo => todo.id)) + 1, todoText: this.todoText, done: false };
+    this.todos.push(newTodoItem);
     this.todoText = '';
-
-    console.log(this.todos);
+    this.http
+      .patch('/me/todos/', newTodoItem, this.getRequestOptions())
+      .map(response => response.json())
+      .subscribe(todoItems => {
+        this.todos = todoItems;
+      });
   }
 
   doneTodo(todoItem: TodoItem) {
