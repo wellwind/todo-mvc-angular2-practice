@@ -1,3 +1,4 @@
+import { TodoItem } from './todo-item';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -9,14 +10,18 @@ export class AppComponent implements OnInit {
   inputHint = 'What needs to be done?';
 
   todoText;
-  todos: any[];
+  todos: TodoItem[];
 
   ngOnInit() {
     this.todos = [];
   }
 
   addTodo() {
-    this.todos.push(this.todoText);
+    this.todos.push({ todoText: this.todoText, done: false });
     console.log(this.todos);
+  }
+
+  doneTodo(todoItem: TodoItem) {
+    todoItem.done = !todoItem.done;
   }
 }
