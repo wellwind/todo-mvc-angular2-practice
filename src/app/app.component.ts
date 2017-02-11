@@ -12,7 +12,10 @@ export class AppComponent implements OnInit {
   todoText;
   todos: TodoItem[];
 
+  filterStatus;
+
   ngOnInit() {
+    this.filterStatus = 'All';
     this.todos = [];
   }
 
@@ -29,6 +32,10 @@ export class AppComponent implements OnInit {
 
   clearCompletedTodo() {
     this.todos = this.todos.filter(todo => !todo.done);
+  }
+
+  filterTodoStatus(status) {
+    this.filterStatus = status;
   }
 
 }

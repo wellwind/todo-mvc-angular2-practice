@@ -9,7 +9,9 @@ import { Output, Input, Component, OnInit, EventEmitter } from '@angular/core';
 export class FooterComponent implements OnInit {
 
   @Input() todos: TodoItem[];
+  @Input() currentFilterStatus: string;
   @Output() clearCompletedTodo = new EventEmitter<any>();
+  @Output() filterTodoStatus = new EventEmitter<any>();
 
   constructor() { }
 
@@ -18,5 +20,9 @@ export class FooterComponent implements OnInit {
 
   clearCompletedTodoEvent() {
     this.clearCompletedTodo.emit();
+  }
+
+  filterStatus(status) {
+    this.filterTodoStatus.emit(status);
   }
 }
