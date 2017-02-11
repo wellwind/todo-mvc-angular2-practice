@@ -18,6 +18,8 @@ export class AppComponent implements OnInit {
 
   addTodo() {
     this.todos.push({ todoText: this.todoText, done: false });
+    this.todoText = '';
+
     console.log(this.todos);
   }
 
