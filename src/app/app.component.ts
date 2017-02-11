@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  inputHint = "What needs to be done?";
+  inputHint = 'What needs to be done?';
 
   todoText;
   todos: any[];
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     this.todos = [];
   }
 
-  addTodo(){
+  addTodo() {
     this.todos.push(this.todoText);
     console.log(this.todos);
   }
